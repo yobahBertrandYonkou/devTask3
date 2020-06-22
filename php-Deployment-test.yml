@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: my-dep-php
+
+spec:
+ replicas: 1
+ selector:
+   matchLabels:
+     env: testing
+     app: php-server
+
+ template:
+   metadata:
+     name: php-server
+     labels:
+       env: testing
+       app: php-server
+   spec:
+     containers:
+     - name: webserver
+       image: vimal13/apache-webserver-php:latest
+       volumeMounts:
+         - name: web-pvc
+           mountPath: /var/www/html
+     
+     volumes:
+       - name: web-pvc
+         persistentVolumeClaim:
+           claimName: web-pvc
